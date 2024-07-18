@@ -1,0 +1,34 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
+}
+
+/* Users list styles */
+#users-list {
+    list-style-type: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+#users-list li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#users-list li:nth-child(even) {
+    background-color: #f9f9f9;
+}
