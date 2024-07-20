@@ -7,11 +7,13 @@ let all = async (req, res) => {
             path: 'subcats',
             populate: { path: 'childcat' }
         });
-        LIBBY.fMsg(res,"All Categories",results)
+        LIBBY.fMsg(res,"All Categories",results) 
     } catch (error) {
         LIBBY.fMsg(res,"Error",error.message)
     }
 };
+
+
 
 let one = async (req, res) => {
     try {

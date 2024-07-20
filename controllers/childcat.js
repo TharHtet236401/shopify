@@ -3,7 +3,7 @@ const LIBBY = require("../utils/libby")
 const ChildcatTB = require("../models/childcat");
 
 let all = async (req, res) => {
-    let result= await ChildcatTB.find();
+    let result= await ChildcatTB.find().select('- __v -createdAt -updatedAt');
     LIBBY.fMsg(res,"All child cat fetched",result)
 }
 

@@ -8,6 +8,7 @@ require('dotenv').config();
 const categoryRouter = require('./routes/category')
 const subcatRouter = require('./routes/subcat')
 const childcatRouter = require('./routes/childcat')
+const tagsRouter = require('./routes/tags')
 const app = express();
 
 mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB}`, {
@@ -28,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/cats',categoryRouter)
 app.use('/subcats',subcatRouter)
 app.use('/childcats',childcatRouter)
-
+app.use('/tags',tagsRouter)
 
 
 // Catch-all route

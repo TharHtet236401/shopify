@@ -9,3 +9,4 @@ const subcatSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('Subcat',subcatSchema);
+
