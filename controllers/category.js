@@ -3,7 +3,10 @@ const LIBBY = require("../utils/libby")
 
 let all = async (req, res) => {
     try {
-        let results = await TB.find();
+        let results = await TB.find().populate({
+            path: 'subcats',
+            populate: { path: 'childcat' }
+        });
         LIBBY.fMsg(res,"All Categories",results)
     } catch (error) {
         LIBBY.fMsg(res,"Error",error.message)
@@ -53,6 +56,7 @@ let update = async (req,res)=>{
         LIBBY.fMsg(res,`Category not found with the id of ${req.params.id}`,null)
     }
 }
+
 
 module.exports = { all, 
     one, 

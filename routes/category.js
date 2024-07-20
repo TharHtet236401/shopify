@@ -1,4 +1,4 @@
-const { all,one,add,drop,update} = require('../controllers/controller');
+const { all,one,add,drop,update} = require('../controllers/category');
 const {saveFile} = require('../utils/gallery')
 const router = require('express-promise-router')();
 
