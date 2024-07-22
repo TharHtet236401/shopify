@@ -9,6 +9,7 @@ const categoryRouter = require('./routes/category')
 const subcatRouter = require('./routes/subcat')
 const childcatRouter = require('./routes/childcat')
 const tagsRouter = require('./routes/tags')
+const userRouter = require('./routes/user')
 const app = express();
 
 mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB}`, {
@@ -30,7 +31,7 @@ app.use('/cats',categoryRouter)
 app.use('/subcats',subcatRouter)
 app.use('/childcats',childcatRouter)
 app.use('/tags',tagsRouter)
-
+app.use('/users',userRouter)
 
 // Catch-all route
 app.get("*", (req, res) => {

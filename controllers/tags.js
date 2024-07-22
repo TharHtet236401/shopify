@@ -10,7 +10,7 @@ let all = async (req,res,next)=>{
 let add = async(req,res)=>{
     let saveData = new TagsTB(req.body);
     let result = await saveData.save();
-    LIBBY.fMsg(res,"Tag added", result)
+    LIBBY.fMsg(res,"Tag added", req.body)
 }
 
 let one = async (req,res,next)=>{
