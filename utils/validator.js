@@ -6,7 +6,7 @@ module.exports ={
             next(new Error(result.error.details[0].message))
         }
         else{
-            console.log(result)
+            // console.log(result)
         }
         next();
        }
