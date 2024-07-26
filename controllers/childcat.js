@@ -3,18 +3,24 @@ const LIBBY = require("../utils/libby")
 const ChildcatTB = require("../models/childcat");
 
 let all = async (req, res) => {
-    let result= await ChildcatTB.find().select('- __v -createdAt -updatedAt');
+    let result= await ChildcatTB.find();
     LIBBY.fMsg(res,"All child cat fetched",result)
 }
 
-let add = async(req,res)=>{
-    let saveData = new ChildcatTB(req.body);
-    let result = await saveData.save();
 
-    let subcat = await SubcatTB.findById(req.body.subcat);
-    let subcatUpdate = await SubcatTB.findByIdAndUpdate(subcat._id,{$push:{childcat:result._id}});
-    LIBBY.fMsg(res,"Child cat added",result)
-}
+let add = async (req, res) => {
+    try {
+        if (!req.body.image) {
+            return res.status(400).json({ con: false, message: "Image is required" });
+        }
+        let savedCat = new ChildcatTB(req.body);
+        let result = await savedCat.save();
+        let catUpdate = await SubcatTB.findByIdAndUpdate(req.body.subcat,{$push:{childcat:result._id}});
+        LIBBY.fMsg(res,"Category added",result)
+    } catch (error) {
+        LIBBY.fMsg(res,"Error",error.message)
+    }
+};
 
 let one = async (req,res)=>{
     let result = await ChildcatTB.findById(req.params.id);

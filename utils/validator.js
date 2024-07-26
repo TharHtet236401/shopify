@@ -2,11 +2,12 @@ module.exports ={
     validateBody: (schema) => {
        return (req,res,next)=>{
         let result =schema.validate(req.body);
+        console.log(result)
         if(result.error){
             next(new Error(result.error.details[0].message))
         }
         else{
-            console.log(result)
+            // console.log(result)
         }
         next();
        }

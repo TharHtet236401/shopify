@@ -10,6 +10,8 @@ const subcatRouter = require('./routes/subcat')
 const childcatRouter = require('./routes/childcat')
 const tagsRouter = require('./routes/tags')
 const userRouter = require('./routes/user')
+const permitRouter = require('./routes/permit')
+const roleRouter = require('./routes/role')
 const app = express();
 
 mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB}`, {
@@ -31,7 +33,10 @@ app.use('/cats',categoryRouter)
 app.use('/subcats',subcatRouter)
 app.use('/childcats',childcatRouter)
 app.use('/tags',tagsRouter)
+app.use('/permits',permitRouter)
 app.use('/users',userRouter)
+app.use('/roles',roleRouter)
+
 
 // Catch-all route
 app.get("*", (req, res) => {

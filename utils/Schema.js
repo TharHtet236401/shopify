@@ -20,6 +20,11 @@ module.exports = {
             image:Joi.string().required()
         })
     },
+    PermitSchema:{
+        add:Joi.object({
+            name:Joi.string().required().min(3)
+        })
+    },
     AllSchema:{
         id:Joi.object(
             {

@@ -6,7 +6,7 @@ let all = async (req, res) => {
         let results = await TB.find().populate({
             path: 'subcats',
             populate: { path: 'childcat' }
-        });
+        }).select('-__v -createdAt -updatedAt');
         LIBBY.fMsg(res,"All Categories",results) 
     } catch (error) {
         LIBBY.fMsg(res,"Error",error.message)
@@ -17,7 +17,7 @@ let all = async (req, res) => {
 
 let one = async (req, res) => {
     try {
-        let result = await TB.findById(req.params.id);
+        let result = await TB.findById(req.params.id).select('-__v -created');
         LIBBY.fMsg(res,"One Category Found",result)
     } catch (error) {
         LIBBY.fMsg(res,"Error",error.message)

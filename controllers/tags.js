@@ -4,7 +4,6 @@ const LIBBY = require("../utils/libby")
 let all = async (req,res,next)=>{
     let result = await TagsTB.find()
     LIBBY.fMsg(res,"All tags fetch", result)
-    
 }
 
 let add = async(req,res)=>{

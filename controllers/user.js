@@ -7,6 +7,7 @@ let all = async (req,res,next)=>{
 }
 
 let add = async(req,res)=>{
+    req.body.password = LIBBY.encode(req.body.password);
     let saveData = new UsersTB(req.body);
     let result = await saveData.save();
     LIBBY.fMsg(res,"User added", result)
