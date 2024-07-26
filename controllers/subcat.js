@@ -3,9 +3,9 @@ const LIBBY = require("../utils/libby")
 const SubcatTB = require("../models/subcat");
 
 let all = async(req,res,next)=>{
-    let result = await SubcatTB.find().populate('childcat').select('-__v');
+    let result = await SubcatTB.find().populate('childcat').select('-__v -CreatedAt ');
     LIBBY.fMsg(res,"All Subcats Fetched",result)
-}
+}   
 
 let add = async(req,res)=>{
     let saveData = new SubcatTB(req.body);

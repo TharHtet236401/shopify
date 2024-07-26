@@ -6,7 +6,7 @@ let all = async (req, res) => {
         let results = await TB.find().populate({
             path: 'subcats',
             populate: { path: 'childcat' }
-        });
+        }).select('-__v -createdAt -updatedAt');
         LIBBY.fMsg(res,"All Categories",results) 
     } catch (error) {
         LIBBY.fMsg(res,"Error",error.message)
