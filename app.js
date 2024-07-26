@@ -14,6 +14,8 @@ const permitRouter = require('./routes/permit')
 const roleRouter = require('./routes/role')
 const app = express();
 
+const {validateToken} = require('./utils/validator')
+
 mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -29,13 +31,13 @@ app.use(fileUpload({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/cats',categoryRouter)
+app.use('/cats',validateToken(),categoryRouter)
 app.use('/subcats',subcatRouter)
 app.use('/childcats',childcatRouter)
 app.use('/tags',tagsRouter)
 app.use('/permits',permitRouter)
-app.use('/users',userRouter)
 app.use('/roles',roleRouter)
+app.use('/users',validateToken(),userRouter)
 
 
 // Catch-all route

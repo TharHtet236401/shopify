@@ -2,10 +2,18 @@ const Joi = require('joi');
 
 module.exports = {
     UserSchema:{
-        add:Joi.object({
+        register:Joi.object({
             name:Joi.string().min(3).max(10).required(),
             phone:Joi.string().min(7).max(11).required(),
             password:Joi.string().min(8).max(30).required()
+        }),
+        login:Joi.object({
+            phone:Joi.string().min(7).max(11).required(),
+            password:Joi.string().min(8).max(30).required()
+        }),
+        addRole:Joi.object({
+            userId:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            roleId:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
         })
     },
     CategorySchema:{

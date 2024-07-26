@@ -26,12 +26,12 @@ let one = async (req, res) => {
 
 let add = async (req, res) => {
     try {
-        if (!req.body.image) {
-            return res.status(400).json({ con: false, message: "Image is required" });
-        }
-        let savedCat = new TB(req.body);
-        let result = await savedCat.save();
-        LIBBY.fMsg(res,"Category added",result)
+        // if (!req.body.image) {
+        //     return res.status(400).json({ con: false, message: "Image is required" });
+        // }
+        // let savedCat = new TB(req.body);
+        // let result = await savedCat.save();
+        LIBBY.fMsg(res,"Category added",req.body)
     } catch (error) {
         LIBBY.fMsg(res,"Error",error.message)
     }

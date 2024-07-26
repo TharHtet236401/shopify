@@ -3,6 +3,7 @@ const {saveFile} = require('../utils/gallery')
 const router = require('express-promise-router')();
 
 
+
 router.get("/",all)
 router.post("/",saveFile,add)
 
