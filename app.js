@@ -12,6 +12,7 @@ const tagsRouter = require('./routes/tags')
 const userRouter = require('./routes/user')
 const permitRouter = require('./routes/permit')
 const roleRouter = require('./routes/role')
+const apiRouter = require('./routes/api')
 const app = express();
 
 const {validateToken} = require('./utils/validator')
@@ -38,6 +39,7 @@ app.use('/tags',tagsRouter)
 app.use('/permits',permitRouter)
 app.use('/roles',roleRouter)
 app.use('/users',validateToken(),userRouter)
+app.use('/api',apiRouter)
 
 
 // Catch-all route

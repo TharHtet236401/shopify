@@ -23,8 +23,12 @@ let add = async (req, res) => {
 };
 
 let one = async (req,res)=>{
-    let result = await ChildcatTB.findById(req.params.id);
-    LIBBY.fMsg(res,"Child cat fetched",result)
+    try{
+        let result = await ChildcatTB.findById(req.params.id);
+        LIBBY.fMsg(res,"Child cat fetched",result)
+    }catch(error){
+        LIBBY.fMsg(res,"Error",error.message)
+    }
 }
 
 let patch = async (req,res)=>{

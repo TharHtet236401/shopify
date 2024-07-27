@@ -9,11 +9,13 @@ module.exports = {
         }),
         login:Joi.object({
             phone:Joi.string().min(7).max(11).required(),
-            password:Joi.string().min(8).max(30).required()
+            password:Joi.string().min(8).max(30).required(),
+            user:Joi.object().optional()
         }),
         addRole:Joi.object({
             userId:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
-            roleId:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+            roleId:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            user:Joi.object().optional()
         })
     },
     CategorySchema:{
