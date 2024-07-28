@@ -4,12 +4,14 @@ let LIBBY = require("../utils/libby")
 
 let all = async(req,res,next)=>{
     try {
-        let result = await TB.find().select('-__v -createdAt -updatedAt');
+        let page = req.params.page;
+        let skipCount = Number(page) == 1 ? 0 : (Number(page) - 1) * process.env.LIMIT;
+        let result = await TB.find().skip(skipCount).limit(Number(process.env.LIMIT)).select('-__v -createdAt -updatedAt');
         LIBBY.fMsg(res,"Product Listed",result)
     } catch (error) {
         console.error("Error listing products:", error);
         LIBBY.fMsg(res, "Failed to list products", error);
-    }
+    }  
 }
 
 let add = async(req,res,next)=>{
@@ -38,4 +40,25 @@ let catProduct = async (req,res,next)=>{
         LIBBY.fMsg(res, "Failed to list products", error);
     }
 }
-module.exports = {all,add,catProduct}
+
+let subCatProduct = async (req,res,next)=>{
+    try {
+        let result = await TB.find({subcat:req.params.id})
+        console.log(result)
+        LIBBY.fMsg(res,"Product Listed",result)
+    } catch (error) {
+        console.error("Error listing products:", error);
+        LIBBY.fMsg(res, "Failed to list products", error);
+    }
+}
+
+let childCatProduct = async (req,res,next)=>{
+    try {
+        let result = await TB.find({childcat:req.params.id})
+        LIBBY.fMsg(res,"Product Listed",result)
+    } catch (error) {
+        console.error("Error listing products:", error);
+        LIBBY.fMsg(res, "Failed to list products", error);
+    }
+}
+module.exports = {all,add,catProduct,subCatProduct,childCatProduct}

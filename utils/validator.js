@@ -19,6 +19,7 @@ module.exports ={
             obj[`${name}`] = req.params[name]; 
             let result = schema.validate(obj);
             if (result.error) {
+                console.log("heerew")
                 next(new Error(result.error.details[0].message))
             }
             next();
