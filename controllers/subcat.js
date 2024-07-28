@@ -3,7 +3,10 @@ const LIBBY = require("../utils/libby")
 const SubcatTB = require("../models/subcat");
 
 let all = async(req,res,next)=>{
-    let result = await SubcatTB.find().populate('childcat').select('-__v -CreatedAt ');
+    let result = await SubcatTB.find().populate({ 
+        path: 'childcat', 
+        select: '-__v -createdAt -updatedAt' // Exclude CreatedAt from populated childcat
+    }).select('-__v -createdAt -updatedAt');
     LIBBY.fMsg(res,"All Subcats Fetched",result)
 }   
 

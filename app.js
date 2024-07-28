@@ -13,6 +13,7 @@ const userRouter = require('./routes/user')
 const permitRouter = require('./routes/permit')
 const roleRouter = require('./routes/role')
 const apiRouter = require('./routes/api')
+const productRouter = require('./routes/product')
 const app = express();
 
 const {validateToken} = require('./utils/validator')
@@ -40,7 +41,7 @@ app.use('/permits',permitRouter)
 app.use('/roles',roleRouter)
 app.use('/users',validateToken(),userRouter)
 app.use('/api',apiRouter)
-
+app.use('/products',validateToken(),productRouter)
 
 // Catch-all route
 app.get("*", (req, res) => {

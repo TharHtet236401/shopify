@@ -16,8 +16,31 @@ module.exports = {
             userId:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
             roleId:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
             user:Joi.object().optional()
+        }),
+        addPermit:Joi.object({
+            userId:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            permitId:Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            user:Joi.object().optional()
         })
     },
+    ProductSchema:{
+        add:Joi.object({
+            "name":Joi.string().required(),
+            "price":Joi.number().required(),
+            "brand":Joi.string().required(),
+            "quantity":Joi.number().required(),
+            "image":Joi.array().required(),
+            "category":Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            "subcat":Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            "childcat":Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            "tag":Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+            "refund":Joi.string().optional(),
+            "feature":Joi.object().required(),
+            "color":Joi.array().required(),
+            "user":Joi.object().optional()
+        })
+    }
+    ,
     CategorySchema:{
         add:Joi.object({
              name:Joi.string().required(),

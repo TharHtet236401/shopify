@@ -4,16 +4,14 @@ const LIBBY = require("../utils/libby")
 let all = async (req, res) => {
     try {
         let results = await TB.find().populate({
-            path: 'subcats',
-            populate: { path: 'childcat' }
-        }).select('-__v -createdAt -updatedAt');
+            path: 'subcats',select: '-__v -CreatedAt -createdAt' ,
+            populate: { path: 'childcat',select: '-__v' }
+        }).select('-__v -created -updated');
         LIBBY.fMsg(res,"All Categories",results) 
     } catch (error) {
         LIBBY.fMsg(res,"Error",error.message)
     }
 };
-
-
 
 let one = async (req, res) => {
     try {
@@ -26,11 +24,10 @@ let one = async (req, res) => {
 
 let add = async (req, res) => {
     try {
-        // if (!req.body.image) {
-        //     return res.status(400).json({ con: false, message: "Image is required" });
-        // }
-        // let savedCat = new TB(req.body);
-        // let result = await savedCat.save();
+        
+        delete req.body.user
+        let savedCat = new TB(req.body);
+        let result = await savedCat.save();
         LIBBY.fMsg(res,"Category added",req.body)
     } catch (error) {
         LIBBY.fMsg(res,"Error",error.message)
