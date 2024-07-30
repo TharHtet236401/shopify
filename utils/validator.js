@@ -25,18 +25,20 @@ module.exports ={
             next();
         }
     },
-    validateToken:()=>{
-        return (req,res,next)=>{
-            if(req.headers.authorization){
-                let token = req.headers.authorization.split(" ")[1]
-                let tokenUser = jwt.verify(token,process.env.SECRET_KEY)
-                req.body.user = tokenUser.data;
-                next();
-            }else{
-                next (new Error("No Token and need token"))
+    validateToken: () => {
+        return (req, res, next) => {
+            if (req.headers.authorization) {
+                let token = req.headers.authorization.split(" ")[1];
+                try {
+                    let tokenUser = jwt.verify(token, process.env.SECRET_KEY);
+                    req.body.user = tokenUser.data;
+                    next();
+                } catch (error) {
+                    next(new Error("Invalid token"));
+                }
+            } else {
+                next(new Error("No Token and need token"));
             }
-            
-    }
-
+        }
     }
 }

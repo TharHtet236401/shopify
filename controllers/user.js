@@ -29,13 +29,14 @@ let register = async (req, res, next) => {
 let login = async (req, res, next) => {
     try {
         let dbUser = await UsersTB.findOne({ phone: req.body.phone }).populate('roles');
+        console.log(dbUser)
         if (dbUser) {
             if (LIBBY.decode(req.body.password, dbUser.password)) {
                 let userObj = dbUser.toObject();
                 delete userObj.password;
                 userObj.token = LIBBY.genToken(userObj);
                 LIBBY.fMsg(res, "User Logged In", userObj);
-            } else {
+            } else {    
                 next(new Error("Invalid password"));
             }
         } else {
@@ -100,7 +101,7 @@ let userAddPermit = async (req, res, next) => {
     }
 }
 
-let userRemovePermit = async (req, res, next) => {
+let userRemovePermit = async (req, res, next) => {  
     try {
         let dbUser = await UsersTB.findById(req.body.userId).populate('permits');
         if (dbUser) {
@@ -120,5 +121,17 @@ let userRemovePermit = async (req, res, next) => {
     }
 }
 
+let passwordReset = async(req,res,next)=>{
+    let user = await UsersTB.findById(req.body.user._id)
+   console.log(user);
+   console.log(req.body)
+    if (LIBBY.comPass(req.body.oldpass,user.password)){
+        let encodePassword= LIBBY.encode(req.body.newpass)
+        await UsersTB.findByIdAndUpdate(user._id,{password:encodePassword})
+        LIBBY.fMsg(res,"Password Reset",user)
+    }else{
+        next(new Error("Invalid password"))
+    }
+}
 
-module.exports = { all, register, login, userAddRole, userRemoveRole, userAddPermit,userRemovePermit};
+module.exports = { all, register, login, userAddRole, userRemoveRole, userAddPermit,userRemovePermit,passwordReset};
