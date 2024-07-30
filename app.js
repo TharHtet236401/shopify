@@ -48,6 +48,17 @@ app.get("*", (req, res) => {
     res.status(200).json({ message: "Invalid Route" });
 });
 
+let migrate = async()=>{
+    let migrator = require('./migrations/migrator')
+    let generator = require('./migrations/generate')
+    // await migrator.backup()
+    await migrator.migrate()
+   
+}
+
+migrate()
+
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     err.status = err.status || 505;
