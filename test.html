@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+  <script>
+    const url = 'http://localhost:3000';
+    io.connect(url, { transports: ['websocket'] }); // default is ['polling', 'websocket']
+
+    const socket = io('http://localhost:3000', {
+      transports: ['websocket', 'polling']
+    });
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+    socket.on('connect_error', (error) => {
+      console.log('Connection error:', error);
+    });
+  </script>
+</head>
+<body>Check console for connection status</body>
+</html>
