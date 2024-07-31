@@ -9,7 +9,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
-
+const LIBBY = require('./utils/libby');
 
 const categoryRouter = require('./routes/category')
 const subcatRouter = require('./routes/subcat')
@@ -46,6 +46,7 @@ const {validateToken} = require('./utils/validator')
 mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB}`, {});
 
 const Category = require('./models/category');
+const { Socket } = require('dgram');
 
 // Middleware setup
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -87,15 +88,21 @@ app.use((err, req, res, next) => {
     res.status(err.status).json({ con: false, "message": err.message });
 });
 
-io.on("connection", (socket) => {
-    console.log('Connection Established Thar Htet Aung');
-    socket.emit("greet", "Hello World Thar Htet Aung");
-    socket.on("info", (data)=>{
-        console.log(data);
-        socket.emit("myinfo",{name:"Thar Htet Aung",age:20})
-    })
-});
+// io.on("connection", (socket) => {
+//     console.log('Connection Established Thar Htet Aung');
+//     socket.emit("greet", "Hello World Thar Htet Aung");
+//     socket.on("info", (data)=>{
+//         console.log(data);
+//         socket.emit("myinfo",{name:"Thar Htet Aung",age:20})
+//     })
+// });
 
+io.of("/chat").use(async (socket,next)=>{
+    await LIBBY.tokenFromSocket(socket,next)
+}).on("connection",(socket)=>{
+    console.log('Connection Established Thar Htet Aung');
+    socket.emit("greet","Hello World Thar hTte Aung")
+})
 
 
 io.on("connect_error", (err) => {
