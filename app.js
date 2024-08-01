@@ -89,8 +89,8 @@ app.use((err, req, res, next) => {
 });
 
 // io.on("connection", (socket) => {
+//     socket.emit("hello", "Hello World Thar Htet Aung");
 //     console.log('Connection Established Thar Htet Aung');
-//     socket.emit("greet", "Hello World Thar Htet Aung");
 //     socket.on("info", (data)=>{
 //         console.log(data);
 //         socket.emit("myinfo",{name:"Thar Htet Aung",age:20})
@@ -100,11 +100,10 @@ app.use((err, req, res, next) => {
 io.of("/chat").use(async (socket,next)=>{
     await LIBBY.tokenFromSocket(socket,next)
 }).on("connection",(socket)=>{
-    console.log('Connection Established Thar Htet Aung');
-    socket.emit("greet","Hello World Thar hTte Aung")
+    require("./utils/chat").initialize(io, socket)
 })
 
-
+ 
 io.on("connect_error", (err) => {
     console.error("Connection Error:", err);
 });

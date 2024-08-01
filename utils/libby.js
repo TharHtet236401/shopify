@@ -11,7 +11,8 @@ let tokenFromSocket = async (socket,next)=>{
     if(token){
         try{
             user = jwt.verify(token,process.env.SECRET_KEY)
-            console.log(user);
+            // console.log(user.data);
+            socket.data = user.data
         }catch(err){
             next(new Error("Handshake Error"))
         }
