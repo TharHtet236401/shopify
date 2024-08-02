@@ -1,6 +1,7 @@
 const Redis = require('./redis');
 const UnReadTB = require('../models/unread');
 const MessageTB = require('../models/message');
+const Message = require('../models/message');
 
 let liveUser = async( socketId,user) =>{
     user ['socketId'] = socketId;
@@ -17,6 +18,7 @@ let initialize = async(io, socket) =>{
     liveUser(socket.id,socket.data)
     socket.on('unread',(data)=> sendUnreadMsg(socket));
     socket.on ('message',(data)=> incomingMessage(socket,data,io))
+    socket.on('load-more',(data)=> loadMore(socket,data,io))
 }
 
 let sendUnreadMsg = async(socket) =>{
@@ -54,5 +56,13 @@ let incomingMessage = async(socket,message,io) =>{
     
 }
 
+let loadMore = async(socket,data,io) =>{
+    let limit = Number(process.env.MSG_LIMIT);
+    let skip = data.page == 0?0:Number(data.page)*limit;
+    let messages = await MessageTB.find({
+        $or :[{from:socket.currentUserId,},{to:socket.currentUserId}]
+    }).sort({created:-1}).skip(skip).limit(limit).populate('from to','name _id');
+    socket.emit("message",messages)
+}
 
 module.exports = {initialize,sendUnreadMsg}
