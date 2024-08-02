@@ -4,10 +4,9 @@ const MessageTB = require('../models/message');
 
 let liveUser = async( socketId,user) =>{
     user ['socketId'] = socketId;
-    // console.log(socketId)
-    // console.log(user)
     await Redis.setObj(socketId,user._id);
     await Redis.setObj(user._id,user);
+    
 }
 
 
@@ -16,36 +15,40 @@ let initialize = async(io, socket) =>{
     socket.emit ("socketId",socket.id)
     socket['currentUserId'] = socket.data._id;
     liveUser(socket.id,socket.data)
-    
     socket.on('unread',(data)=> sendUnreadMsg(socket));
     socket.on ('message',(data)=> incomingMessage(socket,data,io))
 }
 
 let sendUnreadMsg = async(socket) =>{
     let unreads = await UnReadTB.find({to:socket.currentUserId});
+    console.log(unreads.length)
     if (unreads.length > 0){
         for (let unread of unreads){
             await UnReadTB.findOneAndDelete(unread._id);
-            
         }
     }
+  
     socket.emit ("unread", {unreads:unreads.length})
 }
 
-let incomingMessage = async(socket,data,io) =>{
+let incomingMessage = async(socket,message,io) =>{
     
-    let msg = await new MessageTB(data).save();
-    let result = await MessageTB.findById(msg._id).populate('from').populate('to');
+    let msg = await new MessageTB(message).save();
+    let msgResult = await MessageTB.findById(msg._id).populate('from').populate('to');
+    let toUser =await Redis.getObj(message.to);
+  
     
-    let online = await Redis.getObj(data.to);
-    
-    if(online){
-        console.log("online")
-        io.to(online).emit("message",result)
+    if(toUser){
+       let toSocket = io.of("/chat").sockets.get(toUser.socketId);
+       if(toSocket){
+        toSocket.emit("message",msg)
+       }else{
+        await new UnReadTB({from:message.from,to:message.to}).save();
+       }
     }else{
-        console.log("offline")
-        await new UnReadTB({from:data.from,to:data.to}).save();
+        await new UnReadTB({from:message.from,to:message.to}).save();
     }
+    
    
     
     
